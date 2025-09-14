@@ -19,7 +19,7 @@ from lightgbm import LGBMClassifier
 from sklearn.linear_model import LogisticRegression
 from xgboost import XGBClassifier
 
-from claimflowengine.prediction.train_denial_model import (
+from claimtriageai.prediction.train_denial_model import (
     composite_score,
     evaluate_model,
 )

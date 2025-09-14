@@ -12,14 +12,14 @@ Intended Use:
 Functions:
 - clean_text_fields(df: pd.DataFrame) -> pd.DataFrame
 
-Author: ClaimFlowEngine Team
+Author: ClaimTriageAI Team
 """
 
 import re
 
 import pandas as pd
 
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.utils.logger import get_logger
 
 # Initialize Logging
 logger = get_logger("preprocessing")

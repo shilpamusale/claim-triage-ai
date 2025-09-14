@@ -3,17 +3,17 @@ import json
 
 import pandas as pd
 
-from claimflowengine.clustering.cluster_summary import (
+from claimtriageai.clustering.cluster_summary import (
     attach_cluster_labels,
     generate_cluster_labels,
 )
-from claimflowengine.clustering.clustering_pipeline import cluster_claims
-from claimflowengine.configs.paths import (
+from claimtriageai.clustering.clustering_pipeline import cluster_claims
+from claimtriageai.configs.paths import (
     CLUSTER_LABELS_JSON_PATH,
     CLUSTERING_OUTPUT_PATH,
     INFERENCE_INPUT_PATH,
 )
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.utils.logger import get_logger
 
 logger = get_logger("cluster")
 

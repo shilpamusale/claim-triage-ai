@@ -11,7 +11,7 @@ category-encoders==2.6.3
 certifi==2025.4.26
 cfgv==3.4.0
 charset-normalizer==3.4.2
--e git+https://github.com/ishi3012/claim-flow-engine@859804ae1b20fab8b075da8ae521ba2b9d5c54e8#egg=claimflowengine
+-e git+https://github.com/ishi3012/claim-flow-engine@859804ae1b20fab8b075da8ae521ba2b9d5c54e8#egg=claimtriageai
 click==8.1.8
 cloudpickle==3.1.1
 comm==0.2.2

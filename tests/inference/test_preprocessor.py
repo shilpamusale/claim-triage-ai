@@ -1,8 +1,8 @@
 import pandas as pd
 from mock_claim import mock_input
 
-from claimflowengine.inference.loader import load_model
-from claimflowengine.inference.preprocessor import preprocess_for_inference
+from claimtriageai.inference.loader import load_model
+from claimtriageai.inference.preprocessor import preprocess_for_inference
 
 
 def test_preprocess_mock_claim() -> None:

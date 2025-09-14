@@ -14,13 +14,13 @@ from sklearn.metrics import accuracy_score, f1_score, recall_score, roc_auc_scor
 from sklearn.model_selection import StratifiedKFold
 from xgboost import XGBClassifier
 
-from claimflowengine.configs.paths import (
+from claimtriageai.configs.paths import (
     NUMERICAL_TRANSFORMER_PATH,
     PREDICTION_MODEL_PATH,
     RAW_DATA_PATH,
     TARGET_COL,
 )
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.utils.logger import get_logger
 
 # Initialize Logging
 logger = get_logger("training")

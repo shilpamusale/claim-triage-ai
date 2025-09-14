@@ -1,6 +1,6 @@
 import pandas as pd
 
-from claimflowengine.routing.policy import score_claim
+from claimtriageai.routing.policy import score_claim
 
 
 def test_score_claim_basic() -> None:

@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 
 # from numpy.typing import NDArray
-from claimflowengine.clustering.root_cause_cluster import run_clustering_pipeline
+from claimtriageai.clustering.root_cause_cluster import run_clustering_pipeline
 from tests.clustering.mock_cluster import mock_cluster_input
 
 
@@ -15,7 +15,7 @@ def mocked_embeddings() -> np.ndarray[Any, Any]:
     return np.random.rand(mock_cluster_input.shape[0], 384)
 
 
-@patch("claimflowengine.clustering.root_cause_cluster.embed_denial_reasons")
+@patch("claimtriageai.clustering.root_cause_cluster.embed_denial_reasons")
 def test_run_clustering_pipeline(
     mock_embed_fn: MagicMock, mocked_embeddings: np.ndarray[Any, Any]
 ) -> None:

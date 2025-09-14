@@ -8,10 +8,10 @@ columns like `denied` into clearly defined names:
     - `denial_probability` → model's raw score
 
 Example usage:
-    from claimflowengine.utils.postprocessing import standardize_prediction_columns
+    from claimtriageai.utils.postprocessing import standardize_prediction_columns
     df = standardize_prediction_columns(df)
 
-Author: ClaimFlowEngine Project (2025)
+Author: ClaimTriageAI Project (2025)
 """
 
 import pandas as pd

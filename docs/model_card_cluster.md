@@ -105,11 +105,11 @@ _No hard labels were manually assigned. Semantic labels were derived from cluste
 ## Author
 
 **Shilpa Musale**  
-[LinkedIn](https://www.linkedin.com/in/shilpamusale) • [GitHub](https://github.com/ishi3012) 
+[LinkedIn](https://www.linkedin.com/in/shilpamusale) • [GitHub](https://github.com/shilpamusale) 
 <!-- • [Portfolio](https://ishi3012.github.io/ishi-ai/) -->
 
 ---
 
 ## Repo Link
 
-[ClaimFlowEngine GitHub Repository](https://github.com/ishi3012/ClaimFlowEngine)
+[ClaimTriageAI GitHub Repository](https://github.com/shilpamusale/claim-triage-ai.git)

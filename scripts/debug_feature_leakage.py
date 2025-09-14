@@ -1,8 +1,8 @@
 import pandas as pd
 
-df = pd.read_csv("claimflowengine/data/processed_claims.csv")
+df = pd.read_csv("claimtriageai/data/processed_claims.csv")
 df = df.drop(columns=["denied"])
-y = pd.read_csv("claimflowengine/data/processed_claims.csv")["denied"]
+y = pd.read_csv("claimtriageai/data/processed_claims.csv")["denied"]
 
 # Check for 100% predictive rows
 matches = (

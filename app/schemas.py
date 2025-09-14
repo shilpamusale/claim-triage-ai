@@ -4,7 +4,7 @@ Module: schemas.py
 
 Module Description:
     - Defines typed Pydantic schemas for secure input/output
-    handling in ClaimFlowEngine's FastAPI denial prediction microservice.
+    handling in ClaimTriageAI's FastAPI denial prediction microservice.
     - Ensures HIPAA-safe data flow for ML model inference.
 
 Features:
@@ -23,7 +23,7 @@ Inputs:
 Outputs:
     - Denial risk prediction, potential denial reasons, model metadata
 
-Author: ClaimFlowEngine team
+Author: ClaimTriageAI team
 """
 
 from typing import Annotated, List, Literal, Optional

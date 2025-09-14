@@ -11,7 +11,7 @@ Intended Use:
 - Called by batch script or FastAPI route
 - Compatible with `predictor.py` structure
 
-Author: ClaimFlowEngine Team (2025)
+Author: ClaimTriageAI Team (2025)
 """
 
 from pathlib import Path
@@ -19,14 +19,14 @@ from typing import Optional, Union
 
 import pandas as pd
 
-from claimflowengine.clustering.root_cause_cluster import run_clustering_pipeline
-from claimflowengine.configs.paths import (
+from claimtriageai.clustering.root_cause_cluster import run_clustering_pipeline
+from claimtriageai.configs.paths import (
     CLUSTER_MODEL_PATH,
     CLUSTERING_OUTPUT_PATH,
     REDUCER_MODEL_PATH,
     SENTENCE_TRANSFORMER_MODEL_NAME,
 )
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.utils.logger import get_logger
 
 logger = get_logger("cluster")
 

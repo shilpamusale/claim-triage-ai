@@ -1,6 +1,6 @@
 import pandas as pd
 
-from claimflowengine.routing.policy import PolicyEngine
+from claimtriageai.routing.policy import PolicyEngine
 
 
 def mock_input_df() -> pd.DataFrame:

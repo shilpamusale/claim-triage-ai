@@ -3,10 +3,10 @@ from pathlib import Path
 import pandas as pd
 
 from app.schemas import ClaimInput
-from claimflowengine.preprocessing.build_features import preprocess_and_save
-from claimflowengine.preprocessing.feature_engineering import engineer_features
-from claimflowengine.preprocessing.text_cleaning import clean_text_fields
-from claimflowengine.preprocessing.transformers import get_transformer_pipeline
+from claimtriageai.preprocessing.build_features import preprocess_and_save
+from claimtriageai.preprocessing.feature_engineering import engineer_features
+from claimtriageai.preprocessing.text_cleaning import clean_text_fields
+from claimtriageai.preprocessing.transformers import get_transformer_pipeline
 
 
 def test_preprocess_and_save_runs(tmp_path: Path) -> None:

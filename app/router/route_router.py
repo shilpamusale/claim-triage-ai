@@ -8,7 +8,7 @@ Features:
 - Routes each claim with a priority score and recommended queue
 - Returns list of routed claim dicts
 
-Author: ClaimFlowEngine Team
+Author: ClaimTriageAI Team
 """
 
 from io import BytesIO
@@ -18,16 +18,16 @@ import numpy as np
 import pandas as pd
 from fastapi import APIRouter, File, HTTPException, UploadFile
 
-from claimflowengine.clustering.cluster_summary import (
+from claimtriageai.clustering.cluster_summary import (
     attach_cluster_labels,
     generate_cluster_labels,
 )
-from claimflowengine.clustering.clustering_pipeline import cluster_claims
-from claimflowengine.inference.loader import load_model
-from claimflowengine.inference.predictor import predict_claims
-from claimflowengine.routing.policy import PolicyEngine
-from claimflowengine.utils.logger import get_logger
-from claimflowengine.utils.postprocessing import standardize_prediction_columns
+from claimtriageai.clustering.clustering_pipeline import cluster_claims
+from claimtriageai.inference.loader import load_model
+from claimtriageai.inference.predictor import predict_claims
+from claimtriageai.routing.policy import PolicyEngine
+from claimtriageai.utils.logger import get_logger
+from claimtriageai.utils.postprocessing import standardize_prediction_columns
 
 # Initialize logger
 logger = get_logger("routing")

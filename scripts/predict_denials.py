@@ -12,7 +12,7 @@ python scripts/predict_denials.py \
     --input data/sample_input_for_inference.csv \
     --output output/predictions.csv
 
-Author: ClaimFlowEngine Team
+Author: ClaimTriageAI Team
 """
 
 import argparse
@@ -21,15 +21,15 @@ from pathlib import Path
 import pandas as pd
 import yaml
 
-from claimflowengine.configs.paths import (
+from claimtriageai.configs.paths import (
     DENIAL_PREDICTION_OUTPUT_PATH,
     FEATURE_CONFIG_PATH,
     INFERENCE_INPUT_PATH,
 )
-from claimflowengine.inference.loader import load_model
-from claimflowengine.inference.predictor import predict_claims
-from claimflowengine.utils.logger import get_logger
-from claimflowengine.utils.postprocessing import standardize_prediction_columns
+from claimtriageai.inference.loader import load_model
+from claimtriageai.inference.predictor import predict_claims
+from claimtriageai.utils.logger import get_logger
+from claimtriageai.utils.postprocessing import standardize_prediction_columns
 
 # Initialize Logging
 logger = get_logger("inference")

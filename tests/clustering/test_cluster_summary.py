@@ -1,6 +1,6 @@
 import pandas as pd
 
-from claimflowengine.clustering.cluster_summary import generate_cluster_labels
+from claimtriageai.clustering.cluster_summary import generate_cluster_labels
 
 
 def test_generate_cluster_labels_mode() -> None:

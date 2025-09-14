@@ -1,4 +1,4 @@
-from claimflowengine.inference.loader import load_model
+from claimtriageai.inference.loader import load_model
 
 
 def test_load_model_success() -> None:

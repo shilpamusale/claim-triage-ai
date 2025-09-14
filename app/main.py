@@ -1,7 +1,7 @@
 """
 Module: app.main
 
-Main FastAPI application module for ClaimFlowEngine.
+Main FastAPI application module for ClaimTriageAI.
 
 This module initializes the FastAPI app and provides a health check endpoint.
 
@@ -16,7 +16,7 @@ Intended Use:
 Example:
     uvicorn app.main:app --reload
 
-Author: ClaimFlowEngine Team
+Author: ClaimTriageAI Team
 """
 
 import pandas as pd
@@ -25,14 +25,14 @@ from fastapi.responses import JSONResponse
 
 from app.router.route_router import router as route_router
 from app.schemas import ClaimInput, ClaimPredictionResponse
-from claimflowengine.inference.loader import load_model
-from claimflowengine.inference.predictor import predict_claims
-from claimflowengine.utils.git import get_model_version_tag
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.inference.loader import load_model
+from claimtriageai.inference.predictor import predict_claims
+from claimtriageai.utils.git import get_model_version_tag
+from claimtriageai.utils.logger import get_logger
 
 MODEL_VERSION = get_model_version_tag()
 
-app: FastAPI = FastAPI(title="ClaimFlowEngine", version="0.1.0")
+app: FastAPI = FastAPI(title="ClaimTriageAI", version="0.1.0")
 app.include_router(route_router, prefix="/api")
 
 # Initialize Logger

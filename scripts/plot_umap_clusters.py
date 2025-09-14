@@ -5,7 +5,7 @@ import pandas as pd
 import seaborn as sns
 from sklearn.preprocessing import LabelEncoder
 
-from claimflowengine.configs.paths import CLUSTERING_OUTPUT_PATH
+from claimtriageai.configs.paths import CLUSTERING_OUTPUT_PATH
 
 
 def plot_umap_clusters(input_csv: str, output_path: str) -> None:

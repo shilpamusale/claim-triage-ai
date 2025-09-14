@@ -22,14 +22,14 @@ Functions:
 - engineer_features(df: pd.DataFrame, y: pd.Series | None = None) -> pd.DataFrame
 - engineer_edi_features(df: pd.DataFrame) -> pd.DataFrame
 
-Author: ClaimFlowEngine Team
+Author: ClaimTriageAI Team
 """
 
 from typing import Any, Optional
 
 import pandas as pd
 
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.utils.logger import get_logger
 
 # Initialize Logging
 logger = get_logger("preprocessing")

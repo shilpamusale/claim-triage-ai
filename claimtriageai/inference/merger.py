@@ -1,12 +1,12 @@
 """
-Module: claimflowengine.inference.merger
+Module: claimtriageai.inference.merger
 Combines model prediction output and root cause cluster
 output into a routing-ready DataFrame.
 Features:
 - Merges on `claim_id`
 - Validates schema
 - Ensures readiness for routing pipeline
-Author: ClaimFlowEngine (2025)
+Author: ClaimTriageAI (2025)
 """
 
 from pathlib import Path
@@ -14,7 +14,7 @@ from typing import Union
 
 import pandas as pd
 
-from claimflowengine.configs.paths import (
+from claimtriageai.configs.paths import (
     CLUSTERING_CLAIMS_LABELED_PATH,
     DENIAL_PREDICTION_OUTPUT_PATH,
 )

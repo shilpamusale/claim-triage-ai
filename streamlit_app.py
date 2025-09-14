@@ -1,5 +1,5 @@
 """
-ClaimFlowEngine Streamlit App
+ClaimTriageAI Streamlit App
 
 This module launches a Streamlit-based UI for uploading claim data,
 triggering end-to-end denial prediction, root cause clustering,
@@ -22,7 +22,7 @@ Outputs:
 - DataFrame of triaged claims with predictions, clusters, and routing
 - Charts + download options for recruiter-ready demos
 
-Author: ClaimFlowEngine Project (2025)
+Author: ClaimTriageAI Project (2025)
 """
 
 from typing import Any, Optional, cast
@@ -35,8 +35,8 @@ import streamlit as st
 # FastAPI backend URL
 API_URL: str = "http://localhost:8000/api/fullroute"
 
-st.set_page_config(page_title="ClaimFlowEngine", layout="wide")
-st.title("ClaimFlowEngine — Full Triage Dashboard")
+st.set_page_config(page_title="ClaimTriageAI", layout="wide")
+st.title("ClaimTriageAI — Full Triage Dashboard")
 
 # Tabs for layout
 tabs = st.tabs(["Upload + Predict", "Routing Breakdown", "UMAP Cluster Plot"])

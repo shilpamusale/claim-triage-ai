@@ -6,9 +6,9 @@ chmod +x pre_push_checks.sh
 
 
 
-python -m claimflowengine.preprocessing.build_features
+python -m claimtriageai.preprocessing.build_features
 
-python -m claimflowengine.prediction.train_denial_model
+python -m claimtriageai.prediction.train_denial_model
 
 python scripts/predict_denials.py
 

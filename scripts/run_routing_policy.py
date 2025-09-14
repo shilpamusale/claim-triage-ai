@@ -9,18 +9,18 @@ Usage:
         --input outputs/merged_for_routing.csv \
         --output outputs/routed_claims.csv
 
-Author: ClaimFlowEngine Team (2025)
+Author: ClaimTriageAI Team (2025)
 """
 
 import argparse
 
 import pandas as pd
 
-from claimflowengine.configs.paths import (
+from claimtriageai.configs.paths import (
     CLAIMS_ROUTING_OUTPUT_PATH,
     MERGED_ROUTING_PATH,
 )
-from claimflowengine.routing.policy import PolicyEngine
+from claimtriageai.routing.policy import PolicyEngine
 
 
 def main(input_path: str, output_path: str) -> None:

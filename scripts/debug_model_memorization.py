@@ -4,7 +4,7 @@ import shap
 from xgboost import XGBClassifier
 
 # Load data
-df = pd.read_csv("claimflowengine/data/processed_claims.csv")
+df = pd.read_csv("claimtriageai/data/processed_claims.csv")
 y = df["denied"]
 X = df.drop(columns=["denied"])
 

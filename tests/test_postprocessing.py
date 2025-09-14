@@ -1,7 +1,7 @@
 import pandas as pd
 from pandas import Index
 
-from claimflowengine.utils.postprocessing import standardize_prediction_columns
+from claimtriageai.utils.postprocessing import standardize_prediction_columns
 
 
 def test_single_denied_column_label() -> None:

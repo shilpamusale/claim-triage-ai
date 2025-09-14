@@ -31,6 +31,7 @@ websockets==15.0.1
 uvloop==0.21.0
 itsdangerous==2.2.0
 Jinja2==3.1.6
+streamlit
 
 # Dev tooling
 black==24.3.0
@@ -79,7 +80,7 @@ torch==2.1.2
 huggingface_hub==0.20.3
 
 # Clustering model
-hdbscan==0.8.33
+hdbscan
 
 # Visualization
 matplotlib==3.8.4

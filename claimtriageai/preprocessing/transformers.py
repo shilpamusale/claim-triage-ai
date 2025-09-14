@@ -14,7 +14,7 @@ Features:
 Functions:
 - get_transformer_pipeline(df: pd.DataFrame) -> ColumnTransformer
 
-Author: ClaimFlowEngine Team
+Author: ClaimTriageAI Team
 """
 
 import pandas as pd
@@ -23,8 +23,8 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer, StandardScaler
 
-from claimflowengine.utils.functions import convert_to_int
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.utils.functions import convert_to_int
+from claimtriageai.utils.logger import get_logger
 
 # Initialize Logging
 logger = get_logger("preprocessing")

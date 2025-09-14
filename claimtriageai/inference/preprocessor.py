@@ -24,7 +24,7 @@ Inputs:
 Output:
 - pd.DataFrame of fully preprocessed features
 
-Author: ClaimFlowEngine Team (2025)
+Author: ClaimTriageAI Team (2025)
 """
 
 import pandas as pd
@@ -32,13 +32,13 @@ import yaml
 from category_encoders import TargetEncoder
 from sklearn.compose import ColumnTransformer
 
-from claimflowengine.configs.paths import FEATURE_CONFIG_PATH
-from claimflowengine.preprocessing.feature_engineering import (
+from claimtriageai.configs.paths import FEATURE_CONFIG_PATH
+from claimtriageai.preprocessing.feature_engineering import (
     engineer_edi_features,
     engineer_features,
 )
-from claimflowengine.preprocessing.text_cleaning import clean_text_fields
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.preprocessing.text_cleaning import clean_text_fields
+from claimtriageai.utils.logger import get_logger
 
 # Initialize Logging
 logger = get_logger("inference")

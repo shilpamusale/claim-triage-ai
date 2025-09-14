@@ -1,4 +1,4 @@
-# ClaimFlowEngine
+# ClaimTriageAI
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 ![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)
@@ -13,13 +13,13 @@
 
 
 
-> **ClaimFlowEngine** is an ML-powered microservice for automating healthcare claim denial prediction, uncovering root causes through NLP-based clustering, and intelligently routing high-priority claims to resolution teams using reinforcement learning-inspired policies.
+> **ClaimTriageAI** is an ML-powered microservice for automating healthcare claim denial prediction, uncovering root causes through NLP-based clustering, and intelligently routing high-priority claims to resolution teams using reinforcement learning-inspired policies.
 
 ---
 
 ## Project Overview
 
-**ClaimFlowEngine** simulates real-world **Revenue Cycle Management (RCM)** workflows and serves as a full-stack ML engineering showcase. It enables:
+**ClaimTriageAI** simulates real-world **Revenue Cycle Management (RCM)** workflows and serves as a full-stack ML engineering showcase. It enables:
 
 - Predicting whether a claim will be denied and why
   - For model details and evaluation, see the 
@@ -163,8 +163,8 @@ streamlit run streamlit_app.py
 ## Project Structure
 
 ```bash
-ClaimFlowEngine/
-├── claimflowengine/
+ClaimTriageAI/
+├── claimtriageai/
 │   ├── agents/             # Claim routing + appeal agents
 │   ├── pipelines/          # Model training & scoring
 │   ├── preprocessing/      # Feature engineering modules
@@ -190,8 +190,8 @@ ClaimFlowEngine/
 ## Getting Started
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/ishi3012/ClaimFlowEngine.git
-cd ClaimFlowEngine
+git clone https://github.com/shilpamusale/claim-triage-ai.git
+cd ClaimTriageAI
 ```
 
 ### 2. Install dependencies
@@ -241,7 +241,7 @@ data/raw_claims.csv
 ## Author
 
 **Shilpa Musale**  
-[LinkedIn](https://www.linkedin.com/in/shilpamusale) • [GitHub](https://github.com/ishi3012) 
+[LinkedIn](https://www.linkedin.com/in/shilpamusale) • [GitHub](https://github.com/shilpamusale) 
 <!-- • [Portfolio](https://ishi3012.github.io/ishi-ai/) -->
 
 ## License

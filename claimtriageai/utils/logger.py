@@ -5,10 +5,10 @@ Creates and configures stage-aware loggers for each pipeline module
 (e.g., training, inference, clustering, etc.).
 
 Usage:
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.utils.logger import get_logger
 logger = get_logger("inference")
 
-Author: ClaimFlowEngine Team
+Author: ClaimTriageAI Team
 """
 
 import logging

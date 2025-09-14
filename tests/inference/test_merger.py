@@ -1,6 +1,6 @@
 import pandas as pd
 
-from claimflowengine.inference.merger import merge_predictions_and_clusters
+from claimtriageai.inference.merger import merge_predictions_and_clusters
 
 
 def test_merge_predictions_and_clusters() -> None:

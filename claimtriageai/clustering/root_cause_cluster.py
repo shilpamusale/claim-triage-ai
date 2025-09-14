@@ -30,7 +30,7 @@ Outputs:
 - clustered_claims.csv with 'claim_id', 'denial_cluster_id', etc.
 - Saved models: cluster_model.pkl, umap_reducer.pkl
 
-Author: ClaimFlowEngine Team (2025)
+Author: ClaimTriageAI Team (2025)
 """
 
 from pathlib import Path
@@ -43,16 +43,16 @@ from hdbscan import HDBSCAN
 from sentence_transformers import SentenceTransformer
 from umap import UMAP
 
-from claimflowengine.configs.paths import (
+from claimtriageai.configs.paths import (
     CLUSTER_MODEL_PATH,
     CLUSTERING_OUTPUT_PATH,
     INFERENCE_INPUT_PATH,
     REDUCER_MODEL_PATH,
     SENTENCE_TRANSFORMER_MODEL_NAME,
 )
-from claimflowengine.inference.loader import load_model
-from claimflowengine.inference.preprocessor import preprocess_for_inference
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.inference.loader import load_model
+from claimtriageai.inference.preprocessor import preprocess_for_inference
+from claimtriageai.utils.logger import get_logger
 
 logger = get_logger("cluster")
 

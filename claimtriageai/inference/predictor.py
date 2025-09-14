@@ -13,7 +13,7 @@ Features:
 - PII-safe, reusable business logic
 - Designed for use in batch scripts or FastAPI
 
-Author: ClaimFlowEngine Team
+Author: ClaimTriageAI Team
 """
 
 from typing import Any, Dict, List, Union
@@ -24,8 +24,8 @@ from category_encoders import TargetEncoder
 from sklearn.base import BaseEstimator
 from sklearn.compose import ColumnTransformer
 
-from claimflowengine.inference.preprocessor import preprocess_for_inference
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.inference.preprocessor import preprocess_for_inference
+from claimtriageai.utils.logger import get_logger
 
 # Initialize Logging
 logger = get_logger("inference")

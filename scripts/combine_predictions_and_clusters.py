@@ -10,17 +10,17 @@ Usage:
         --cluster outputs/clusters.csv \
         --output outputs/merged_for_routing.csv
 
-Author: ClaimFlowEngine Team (2025)
+Author: ClaimTriageAI Team (2025)
 """
 
 import argparse
 
-from claimflowengine.configs.paths import (
+from claimtriageai.configs.paths import (
     CLUSTERING_OUTPUT_PATH,
     DENIAL_PREDICTION_OUTPUT_PATH,
     MERGED_ROUTING_PATH,
 )
-from claimflowengine.inference.merger import merge_predictions_and_clusters_from_files
+from claimtriageai.inference.merger import merge_predictions_and_clusters_from_files
 
 
 def main(pred_path: str, cluster_path: str, output_path: str) -> None:

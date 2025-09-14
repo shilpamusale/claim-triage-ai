@@ -10,7 +10,7 @@ Features:
 - Attachable label map to original DataFrame
 - Compatible with human-in-the-loop auditing and downstream routing logic
 
-Author: ClaimFlowEngine Team (2025)
+Author: ClaimTriageAI Team (2025)
 """
 
 from typing import Dict, cast
@@ -19,7 +19,7 @@ import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.utils.logger import get_logger
 
 # Initialize logger
 logger = get_logger("cluster")

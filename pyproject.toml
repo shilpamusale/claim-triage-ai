@@ -3,11 +3,11 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "claimflowengine"
+name = "claimtriageai"
 version = "0.1.0"
 description = "Modular healthcare claims denial prediction and routing system."
 authors = [
-  { name="ClaimFlowEngine Team", email="noreply@example.com" }
+  { name="ClaimTriageAI Team", email="noreply@example.com" }
 ]
 license = { text = "MIT" }
 readme = "README.md"

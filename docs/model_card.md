@@ -9,7 +9,7 @@
 
 ## Overview
 
-This model predicts whether a healthcare claim is likely to be **denied** and, if so, identifies the top 3 **likely reasons** for denial. It is used in the **ClaimFlowEngine** system to optimize revenue cycle operations, automate claim triaging, and reduce time to resolution.
+This model predicts whether a healthcare claim is likely to be **denied** and, if so, identifies the top 3 **likely reasons** for denial. It is used in the **ClaimTriageAI** system to optimize revenue cycle operations, automate claim triaging, and reduce time to resolution.
 
 ---
 
@@ -103,11 +103,11 @@ This model predicts whether a healthcare claim is likely to be **denied** and, i
 ## Author
 
 **Shilpa Musale**  
-[LinkedIn](https://www.linkedin.com/in/shilpamusale) • [GitHub](https://github.com/ishi3012) 
+[LinkedIn](https://www.linkedin.com/in/shilpamusale) • [GitHub](https://github.com/shilpamusale) 
 <!-- • [Portfolio](https://ishi3012.github.io/ishi-ai/) -->
 
 ---
 
 ## Repo Link
 
-[ClaimFlowEngine GitHub Repository](https://github.com/ishi3012/ClaimFlowEngine)
+[ClaimTriageAI GitHub Repository](https://github.com/shilpamusale/claim-triage-ai.git)

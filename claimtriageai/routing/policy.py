@@ -16,7 +16,7 @@ Features:
 - Ready for integration into routing microservice or batch pipeline
 
 Intended Use:
-    from claimflowengine.routing.policy_engine import PolicyEngine
+    from claimtriageai.routing.policy_engine import PolicyEngine
     policy_engine = PolicyEngine()
     routed_df = policy_engine.route_all(claims_df)
 
@@ -36,7 +36,7 @@ Outputs:
     - recommended_queue (str)
     - debug_notes (list of scoring decisions)
 
-Author: ClaimFlowEngine Project (2025)
+Author: ClaimTriageAI Project (2025)
 """
 
 from pathlib import Path
@@ -45,8 +45,8 @@ from typing import Any, Dict, Optional, Tuple, Union, cast
 import pandas as pd
 import yaml
 
-from claimflowengine.configs.paths import ROUTING_CONFIG_PATH
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.configs.paths import ROUTING_CONFIG_PATH
+from claimtriageai.utils.logger import get_logger
 
 # Initilialize logger
 logger = get_logger("routing")

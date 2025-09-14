@@ -16,7 +16,7 @@ Features:
 - Saves data/processed_claims.csv
 - Can be run as a script or imported as a module
 
-Author: ClaimFlowEngine Team
+Author: ClaimTriageAI Team
 """
 
 from pathlib import Path
@@ -29,13 +29,13 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer, StandardScaler
 
-from claimflowengine.preprocessing.feature_engineering import (
+from claimtriageai.preprocessing.feature_engineering import (
     engineer_edi_features,
     engineer_features,
 )
-from claimflowengine.preprocessing.text_cleaning import clean_text_fields
-from claimflowengine.utils.functions import convert_to_int
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.preprocessing.text_cleaning import clean_text_fields
+from claimtriageai.utils.functions import convert_to_int
+from claimtriageai.utils.logger import get_logger
 
 # Initialize Logging
 logger = get_logger("preprocessing")

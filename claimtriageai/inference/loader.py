@@ -25,7 +25,7 @@ Outputs:
 - model: Trained ML model
 - transformer: Optional preprocessing transformer (or None)
 
-Author: ClaimFlowEngine Project (2025)
+Author: ClaimTriageAI Project (2025)
 """
 
 import os
@@ -34,12 +34,12 @@ from typing import Any, Tuple, Union
 
 import joblib
 
-from claimflowengine.configs.paths import (
+from claimtriageai.configs.paths import (
     NUMERICAL_TRANSFORMER_PATH,
     PREDICTION_MODEL_PATH,
     TARGET_ENCODER_PATH,
 )
-from claimflowengine.utils.logger import get_logger
+from claimtriageai.utils.logger import get_logger
 
 # Initialize Logging
 logger = get_logger("inference")
