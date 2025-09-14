@@ -1,0 +1,62 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Logs and outputs
+*.log
+logs/
+*.out
+*.err
+
+# Jupyter & notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Environments
+.env
+.venv/
+venv/
+ENV/
+
+# Pytest cache
+.pytest_cache/
+.cache/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model artifacts (ignore all except whitelisted)
+models/*
+!models/.gitkeep
+!models/denial_prediction_model.joblib
+!models/numeric_transformer.joblib
+!models/target_encoder.joblib
+!models/cluster_model.joblib
+!models/reducer_model.joblib
+
+checkpoints/
+*.pkl
+
+# Data
+data/
+
+# Coverage
+htmlcov/
+.coverage
+
+# Type checking
+.mypy_cache/

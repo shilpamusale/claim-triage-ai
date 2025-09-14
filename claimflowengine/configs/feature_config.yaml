@@ -1,0 +1,26 @@
+# Versioned list of features for model training
+
+version: v1.0
+
+features:
+  - payer_id
+  - provider_type
+  - plan_type
+  - claim_type
+  - billing_provider_specialty
+  - facility_code
+  - diagnosis_code
+  - procedure_code
+  - num__claim_age_days
+  - num__patient_age
+  - num__total_charge_amount
+  - num__days_to_submission
+  - num__payer_deny_rate
+  - num__provider_deny_rate
+  - num__resubmission_rate_by_payer
+  - num__followup_intensity_score
+  - bool__is_resubmission
+  - bool__contains_auth_term
+  - bool__prior_authorization
+  - bool__accident_indicator
+  - bool__high_charge_flag
