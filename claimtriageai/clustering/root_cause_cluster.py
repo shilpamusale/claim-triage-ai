@@ -46,11 +46,9 @@ from umap import UMAP
 from claimtriageai.configs.paths import (
     CLUSTER_MODEL_PATH,
     CLUSTERING_OUTPUT_PATH,
-    INFERENCE_INPUT_PATH,
+    PROCESSED_DATA_PATH,
     REDUCER_MODEL_PATH,
     SENTENCE_TRANSFORMER_MODEL_NAME,
-    PROCESSED_DATA_PATH
-    
 )
 from claimtriageai.inference.loader import load_model
 from claimtriageai.inference.preprocessor import preprocess_for_inference
@@ -69,9 +67,7 @@ def embed_denial_reasons(
 
 
 def reduce_dimensions(
-    data: np.ndarray[Any, Any], 
-    n_components: int = 5, 
-    random_state: int = 42
+    data: np.ndarray[Any, Any], n_components: int = 5, random_state: int = 42
 ) -> tuple[np.ndarray[Any, Any], Optional[UMAP]]:
     if data.shape[0] < 3:
         logger.warning("Too few rows to perform clustering. Returning input unchanged.")
@@ -94,19 +90,22 @@ def reduce_dimensions(
 def cluster_embeddings(
     data: np.ndarray[Any, Any], min_cluster_size: int = 8
 ) -> tuple[np.ndarray[Any, Any], HDBSCAN]:
-    logger.info(f"Clustering data with HDBSCAN (min_cluster_size={min_cluster_size})...")
-    
+    logger.info(
+        f"Clustering data with HDBSCAN (min_cluster_size={min_cluster_size})..."
+    )
+
     clusterer = HDBSCAN(
-        min_cluster_size=min_cluster_size, 
-        min_samples=5, # Added for robustness
-        prediction_data=True
+        min_cluster_size=min_cluster_size,
+        min_samples=5,  # Added for robustness
+        prediction_data=True,
     )
     labels = clusterer.fit_predict(data)
-    
+
     num_clusters = len(set(labels)) - (1 if -1 in labels else 0)
     logger.info(f"Detected {num_clusters} clusters.")
-    
+
     return labels, clusterer
+
 
 # def cluster_embeddings(
 #     data: np.ndarray[Any, Any], min_cluster_size: int = 15
@@ -157,7 +156,7 @@ def run_clustering_pipeline(
     reducer_model_path: Union[str, Path] = REDUCER_MODEL_PATH,
 ) -> pd.DataFrame:
     logger.info("Starting root cause clustering pipeline.")
-    df = df[df['denied'] == 1].copy()
+    df = df[df["denied"] == 1].copy()
 
     if use_notes and notes_col in df.columns:
         logger.info(
@@ -206,12 +205,14 @@ def run_clustering_pipeline(
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Train a clustering model on processed claims data.")
+    parser = argparse.ArgumentParser(
+        description="Train a clustering model on processed claims data."
+    )
     parser.add_argument(
         "--input",
         type=str,
         default=PROCESSED_DATA_PATH,
-        help="Path to the processed claims data for training."
+        help="Path to the processed claims data for training.",
     )
     args = parser.parse_args()
 

@@ -34,7 +34,9 @@ if __name__ == "__main__":
         description="Merge prediction and clustering results."
     )
     parser.add_argument(
-        "--predictions", default=DENIAL_PREDICTION_OUTPUT_PATH, help="Path to predictions CSV"
+        "--predictions",
+        default=DENIAL_PREDICTION_OUTPUT_PATH,
+        help="Path to predictions CSV",
     )
     parser.add_argument(
         "--clusters", default=CLUSTERING_OUTPUT_PATH, help="Path to clustering CSV"

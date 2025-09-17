@@ -10,41 +10,35 @@ This module implements the core business logic to:
 Author: ClaimTriageAI Team
 """
 
+from typing import Any, Dict, List, Union, cast
+
 import pandas as pd
 import yaml
-from typing import Any, Dict, List, Union
-from sklearn.base import BaseEstimator
 from category_encoders import TargetEncoder
+from sklearn.base import BaseEstimator
 from sklearn.compose import ColumnTransformer
+
 from claimtriageai.configs import paths
 from claimtriageai.inference.preprocessor import preprocess_for_inference
-from claimtriageai.utils.functions import load_pickle
 from claimtriageai.utils.logger import get_logger
-from claimtriageai.configs.paths import (
-    PREDICTION_MODEL_PATH,
-    FEATURE_CONFIG_PATH,
-    TARGET_ENCODER_PATH,
-    NUMERICAL_TRANSFORMER_PATH
-
-)
 
 # Initialize Logging
 logger = get_logger("inference")
 
 
-def load_and_merge_configs() -> dict:
+def load_and_merge_configs() -> dict[str, Any]:
     """
     Loads feature config from YAML and merges paths from the paths.py module
     to create a single, complete configuration object.
     """
     logger.info("Loading feature configuration from YAML...")
-    with open(paths.FEATURE_CONFIG_PATH, 'r') as f:
+    with open(paths.FEATURE_CONFIG_PATH, "r") as f:
         config = yaml.safe_load(f)
-    
+
     logger.info("Loading paths from paths.py module...")
     # The vars() function turns the paths.py module's attributes into a dictionary
-    config['paths'] = vars(paths)
-    return config
+    config["paths"] = vars(paths)
+    return cast(dict[str, Any], config)
 
 
 def predict_claims(
@@ -82,17 +76,17 @@ def predict_claims(
     logger.info("Generating denial probabilities...")
     # Get probability of the positive class (denial) which is the second column
     probabilities = model.predict_proba(processed_df)[:, 1]
-    
+
     results = []
     # Ensure claim_id is treated as a string to avoid JSON serialization issues
-    df_input['claim_id'] = df_input['claim_id'].astype(str)
+    df_input["claim_id"] = df_input["claim_id"].astype(str)
 
     for idx, row in df_input.iterrows():
         prob = float(probabilities[idx])
         result = {
             "claim_id": row.get("claim_id", "N/A"),
             "denial_probability": prob,
-            "denial_prediction": 1 if prob > 0.5 else 0
+            "denial_prediction": 1 if prob > 0.5 else 0,
         }
         results.append(result)
 

@@ -20,25 +20,24 @@ Author: ClaimTriageAI Team
 """
 
 from pathlib import Path
+from typing import Any, cast
 
 import joblib
 import pandas as pd
+import yaml
 from category_encoders import TargetEncoder
-from joblib import dump
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer, StandardScaler
 
+from claimtriageai.configs.paths import FEATURE_CONFIG_PATH
 from claimtriageai.preprocessing.feature_engineering import (
     engineer_edi_features,
     engineer_features,
 )
 from claimtriageai.preprocessing.text_cleaning import clean_text_fields
 from claimtriageai.utils.functions import convert_to_int
-
-import yaml
-from claimtriageai.configs.paths import FEATURE_CONFIG_PATH
 from claimtriageai.utils.logger import get_logger
 
 # Initialize Logging
@@ -47,10 +46,12 @@ logger = get_logger("preprocessing")
 
 # ------------------------- Core Logic -------------------------
 
-def load_feature_config():
+
+def load_feature_config() -> dict[str, Any]:
     with open(FEATURE_CONFIG_PATH, "r") as f:
         config = yaml.safe_load(f)
-    return config
+    return cast(dict[str, Any], config)
+
 
 def preprocess_and_save(raw_path: str, output_path: str, transformer_dir: str) -> None:
     logger.info(f"Loading raw data from {raw_path}")
@@ -68,19 +69,26 @@ def preprocess_and_save(raw_path: str, output_path: str, transformer_dir: str) -
     config = load_feature_config()
 
     # EDI fields
-    edi_fields = config.get("edi_fields", [
-        "patient_dob",
-        "service_date",
-        "patient_gender",
-        "facility_code",
-        "billing_provider_specialty",
-        "claim_type",
-        "prior_authorization",
-        "accident_indicator",
-    ])
-    edi_coverage = len([col for col in edi_fields if col in df.columns]) / len(edi_fields)
+    edi_fields = config.get(
+        "edi_fields",
+        [
+            "patient_dob",
+            "service_date",
+            "patient_gender",
+            "facility_code",
+            "billing_provider_specialty",
+            "claim_type",
+            "prior_authorization",
+            "accident_indicator",
+        ],
+    )
+    edi_coverage = len([col for col in edi_fields if col in df.columns]) / len(
+        edi_fields
+    )
     if edi_coverage >= 0.5:
-        logger.info(f"Detected EDI schema ({edi_coverage:.0%} coverage) — applying EDI features")
+        logger.info(
+            f"Detected EDI schema ({edi_coverage:.0%} coverage) — applying EDI features"
+        )
         df = engineer_edi_features(df)
 
     # Extract label and apply full feature engineering
@@ -92,16 +100,19 @@ def preprocess_and_save(raw_path: str, output_path: str, transformer_dir: str) -
     X = df.drop(columns=["denied"])
 
     # Categorical columns
-    categorical_cols = config.get("categorical_features_target_encoded", [
-        "payer_id",
-        "provider_type",
-        "plan_type",
-        "claim_type",
-        "billing_provider_specialty",
-        "facility_code",
-        "diagnosis_code",
-        "procedure_code",
-    ])
+    categorical_cols = config.get(
+        "categorical_features_target_encoded",
+        [
+            "payer_id",
+            "provider_type",
+            "plan_type",
+            "claim_type",
+            "billing_provider_specialty",
+            "facility_code",
+            "diagnosis_code",
+            "procedure_code",
+        ],
+    )
     categorical_cols = [col for col in categorical_cols if col in X.columns]
 
     logger.info("Applying TargetEncoder to categorical features...")
@@ -109,26 +120,32 @@ def preprocess_and_save(raw_path: str, output_path: str, transformer_dir: str) -
     X[categorical_cols] = target_encoder.fit_transform(X[categorical_cols], y)
 
     # Numeric features
-    numeric_features = config.get("numeric_features", [
-        "claim_age_days",
-        "patient_age",
-        "total_charge_amount",
-        "days_to_submission",
-        "payer_deny_rate",
-        "provider_deny_rate",
-        "resubmission_rate_by_payer",
-        "followup_intensity_score",
-    ])
+    numeric_features = config.get(
+        "numeric_features",
+        [
+            "claim_age_days",
+            "patient_age",
+            "total_charge_amount",
+            "days_to_submission",
+            "payer_deny_rate",
+            "provider_deny_rate",
+            "resubmission_rate_by_payer",
+            "followup_intensity_score",
+        ],
+    )
     numeric_features = [f for f in numeric_features if f in X.columns]
 
     # Boolean features
-    boolean_features = config.get("boolean_features", [
-        "is_resubmission",
-        "contains_auth_term",
-        "prior_authorization",
-        "accident_indicator",
-        "high_charge_flag",
-    ])
+    boolean_features = config.get(
+        "boolean_features",
+        [
+            "is_resubmission",
+            "contains_auth_term",
+            "prior_authorization",
+            "accident_indicator",
+            "high_charge_flag",
+        ],
+    )
     boolean_features = [f for f in boolean_features if f in X.columns]
 
     logger.info("Building preprocessing pipeline...")
@@ -190,13 +207,13 @@ def preprocess_and_save(raw_path: str, output_path: str, transformer_dir: str) -
     # Save the numeric transformer/preprocessor
     numeric_transformer_path = f"{transformer_dir}/numeric_transformer.joblib"
     logger.info(f"Saving numeric transformer to {numeric_transformer_path}...")
-    with open(numeric_transformer_path, 'wb') as f:
+    with open(numeric_transformer_path, "wb") as f:
         joblib.dump(preprocessor, f)
 
     # Save the target encoder
     target_encoder_path = f"{transformer_dir}/target_encoder.joblib"
     logger.info(f"Saving target encoder to {target_encoder_path}...")
-    with open(target_encoder_path, 'wb') as f:
+    with open(target_encoder_path, "wb") as f:
         joblib.dump(target_encoder, f)
 
     logger.info("Preprocessing complete.")

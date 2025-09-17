@@ -27,6 +27,8 @@ Output:
 Author: ClaimTriageAI Team (2025)
 """
 
+from typing import Any, cast
+
 import pandas as pd
 import yaml
 from category_encoders import TargetEncoder
@@ -43,10 +45,11 @@ from claimtriageai.utils.logger import get_logger
 # Initialize Logging
 logger = get_logger("inference")
 
-def load_feature_config():
+
+def load_feature_config() -> dict[str, Any]:
     with open(FEATURE_CONFIG_PATH, "r") as f:
         config = yaml.safe_load(f)
-    return config
+    return cast(dict[str, Any], config)
 
 
 def preprocess_for_inference(
@@ -82,16 +85,19 @@ def preprocess_for_inference(
 
     # Step 2: Apply EDI features if sufficient coverage
     # EDI fields
-    edi_fields = config.get("edi_fields", [
-        "patient_dob",
-        "service_date",
-        "patient_gender",
-        "facility_code",
-        "billing_provider_specialty",
-        "claim_type",
-        "prior_authorization",
-        "accident_indicator",
-    ])
+    edi_fields = config.get(
+        "edi_fields",
+        [
+            "patient_dob",
+            "service_date",
+            "patient_gender",
+            "facility_code",
+            "billing_provider_specialty",
+            "claim_type",
+            "prior_authorization",
+            "accident_indicator",
+        ],
+    )
 
     edi_coverage = len([col for col in edi_fields if col in df.columns]) / len(
         edi_fields
@@ -111,16 +117,19 @@ def preprocess_for_inference(
     # Step 4: Encode categorical features
     logger.info("Step 4: Encode categorical features... ")
     # Categorical columns
-    categorical_cols = config.get("categorical_features_target_encoded", [
-        "payer_id",
-        "provider_type",
-        "plan_type",
-        "claim_type",
-        "billing_provider_specialty",
-        "facility_code",
-        "diagnosis_code",
-        "procedure_code",
-    ])
+    categorical_cols = config.get(
+        "categorical_features_target_encoded",
+        [
+            "payer_id",
+            "provider_type",
+            "plan_type",
+            "claim_type",
+            "billing_provider_specialty",
+            "facility_code",
+            "diagnosis_code",
+            "procedure_code",
+        ],
+    )
 
     categorical_cols = [col for col in categorical_cols if col in X.columns]
 
@@ -128,24 +137,30 @@ def preprocess_for_inference(
 
     # Step 6: Transform Numeric + boolean
     logger.info("Step 6: Transform Numeric + boolean... ")
-    numeric_features = config.get("numeric_features", [
-        "claim_age_days",
-        "patient_age",
-        "total_charge_amount",
-        "days_to_submission",
-        "payer_deny_rate",
-        "provider_deny_rate",
-        "resubmission_rate_by_payer",
-        "followup_intensity_score",
-    ])
-     # Boolean features
-    boolean_features = config.get("boolean_features", [
-        "is_resubmission",
-        "contains_auth_term",
-        "prior_authorization",
-        "accident_indicator",
-        "high_charge_flag",
-    ])
+    numeric_features = config.get(
+        "numeric_features",
+        [
+            "claim_age_days",
+            "patient_age",
+            "total_charge_amount",
+            "days_to_submission",
+            "payer_deny_rate",
+            "provider_deny_rate",
+            "resubmission_rate_by_payer",
+            "followup_intensity_score",
+        ],
+    )
+    # Boolean features
+    boolean_features = config.get(
+        "boolean_features",
+        [
+            "is_resubmission",
+            "contains_auth_term",
+            "prior_authorization",
+            "accident_indicator",
+            "high_charge_flag",
+        ],
+    )
 
     numeric_features = [f for f in numeric_features if f in X.columns]
     boolean_features = [f for f in boolean_features if f in X.columns]

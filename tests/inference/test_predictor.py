@@ -13,5 +13,5 @@ def test_predict_claims_output_format() -> None:
     assert isinstance(results, list)
     assert all(isinstance(r, dict) for r in results)
     for r in results:
-        assert "denied" in r
+        assert "denial_prediction" in r
         assert "denial_probability" in r

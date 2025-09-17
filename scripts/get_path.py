@@ -1,5 +1,6 @@
 import sys
-from claimtriageai.configs.paths import *
+
+from claimtriageai.configs import paths
 
 if len(sys.argv) != 2:
     print("Usage: python scripts/get_path.py <VARIABLE_NAME>")
@@ -7,8 +8,8 @@ if len(sys.argv) != 2:
 
 var = sys.argv[1]
 try:
-    value = globals()[var]
+    value = getattr(paths, var)
     print(value)
-except KeyError:
+except AttributeError:
     print(f"Variable '{var}' not found in claimtriageai.configs.paths.")
     sys.exit(1)

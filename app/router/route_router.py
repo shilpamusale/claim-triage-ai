@@ -107,35 +107,31 @@
 # --- Make sure these imports are at the top of the file ---
 
 
-
-
 from io import BytesIO
 from typing import Any, Dict, List, cast
 
 import numpy as np
 import pandas as pd
 from fastapi import APIRouter, File, HTTPException, UploadFile
-from fastapi.responses import JSONResponse
-from claimtriageai.routing.policy import PolicyEngine
+
 from claimtriageai.clustering.cluster_summary import (
     attach_cluster_labels,
     generate_cluster_labels,
 )
-from claimtriageai.clustering.clustering_pipeline import cluster_claims
+from claimtriageai.configs.paths import CLUSTER_MODEL_PATH, REDUCER_MODEL_PATH
+from claimtriageai.inference.cluster_predictor import predict_clusters
 from claimtriageai.inference.loader import load_model
 from claimtriageai.inference.predictor import predict_claims
-from claimtriageai.inference.cluster_predictor import predict_clusters
 from claimtriageai.routing.policy import PolicyEngine
 from claimtriageai.utils.logger import get_logger
-from claimtriageai.utils.postprocessing import standardize_prediction_columns
-from claimtriageai.configs.paths import REDUCER_MODEL_PATH, CLUSTER_MODEL_PATH
 
 # Initialize logger
 logger = get_logger("routing")
 router: APIRouter = APIRouter()
 policy_engine = PolicyEngine()
 
-@router.post("/fullroute", response_model=List[Dict[str, Any]])
+
+@router.post("/fullroute", response_model=List[Dict[str, Any]])  # type: ignore[misc]
 async def full_route_claims(file: UploadFile = File(...)) -> List[Dict[str, Any]]:
     """
     Accepts a CSV file, performs:
@@ -157,35 +153,48 @@ async def full_route_claims(file: UploadFile = File(...)) -> List[Dict[str, Any]
             target_encoder=target_encoder,
             numeric_transformer=numeric_transformer,
         )
-        
-        # --- FIX: Drop the redundant 'claim_id' from the results before concatenating ---
-        pred_results_df = pd.DataFrame(pred_results).drop(columns=['claim_id'])
+
+        # --- FIX: Drop the redundant 'claim_id'
+        # from the results before concatenating ---
+        pred_results_df = pd.DataFrame(pred_results).drop(columns=["claim_id"])
         df_pred = pd.concat([df_raw.reset_index(drop=True), pred_results_df], axis=1)
 
         # --- Step 2: Root Cause Clustering ---
         logger.info("Step 2: Running Root Cause Clustering...")
-        denied_claims_df = df_pred[df_pred['denial_prediction'] == 1].copy()
-        
-        not_denied_claims_df = df_pred[df_pred['denial_prediction'] == 0].copy()
-        not_denied_claims_df['denial_cluster_id'] = -1
-        not_denied_claims_df['cluster_label'] = 'Not Denied'
-        not_denied_claims_df['umap_x'] = np.nan
-        not_denied_claims_df['umap_y'] = np.nan
+        denied_claims_df = df_pred[df_pred["denial_prediction"] == 1].copy()
+
+        not_denied_claims_df = df_pred[df_pred["denial_prediction"] == 0].copy()
+        not_denied_claims_df["denial_cluster_id"] = -1
+        not_denied_claims_df["cluster_label"] = "Not Denied"
+        not_denied_claims_df["umap_x"] = np.nan
+        not_denied_claims_df["umap_y"] = np.nan
 
         labeled_df = pd.DataFrame()
-        
+
         if not denied_claims_df.empty:
+            # predicted_labels, umap_coords_df = predict_clusters(
+            #     raw_data=denied_claims_df,
+            #     reducer_path=REDUCER_MODEL_PATH,
+            #     clusterer_path=CLUSTER_MODEL_PATH,
+            # )
             predicted_labels, umap_coords_df = predict_clusters(
                 raw_data=denied_claims_df,
-                reducer_path=REDUCER_MODEL_PATH,
-                clusterer_path=CLUSTER_MODEL_PATH
+                reducer_path=str(REDUCER_MODEL_PATH),
+                clusterer_path=str(CLUSTER_MODEL_PATH),
+                # sbert_model_name=SBERT_MODEL_NAME,
             )
-            denied_claims_df['denial_cluster_id'] = predicted_labels
-            denied_claims_df = pd.concat([denied_claims_df.reset_index(drop=True), umap_coords_df.reset_index(drop=True)], axis=1)
+            denied_claims_df["denial_cluster_id"] = predicted_labels
+            denied_claims_df = pd.concat(
+                [
+                    denied_claims_df.reset_index(drop=True),
+                    umap_coords_df.reset_index(drop=True),
+                ],
+                axis=1,
+            )
 
             label_map = generate_cluster_labels(denied_claims_df)
             labeled_df = attach_cluster_labels(denied_claims_df, label_map)
-        
+
         final_df = pd.concat([labeled_df, not_denied_claims_df], ignore_index=True)
 
         # --- Step 3: Routing ---

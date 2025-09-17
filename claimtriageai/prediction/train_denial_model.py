@@ -1,11 +1,12 @@
 import argparse
 from collections import Counter
 from pathlib import Path
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Tuple, cast
 
 import joblib
 import numpy as np
 import pandas as pd
+import yaml
 from catboost import CatBoostClassifier
 from interpret.glassbox import ExplainableBoostingClassifier
 from lightgbm import LGBMClassifier
@@ -14,13 +15,12 @@ from sklearn.metrics import accuracy_score, f1_score, recall_score, roc_auc_scor
 from sklearn.model_selection import StratifiedKFold
 from xgboost import XGBClassifier
 
-import yaml
 from claimtriageai.configs.paths import (
+    FEATURE_CONFIG_PATH,
     NUMERICAL_TRANSFORMER_PATH,
     PREDICTION_MODEL_PATH,
     PROCESSED_DATA_PATH,
     TARGET_COL,
-    FEATURE_CONFIG_PATH,
 )
 from claimtriageai.utils.logger import get_logger
 
@@ -28,10 +28,11 @@ from claimtriageai.utils.logger import get_logger
 logger = get_logger("training")
 
 
-def load_feature_config():
+def load_feature_config() -> dict[str, Any]:
     with open(FEATURE_CONFIG_PATH, "r") as f:
         config = yaml.safe_load(f)
-    return config
+    return cast(dict[str, Any], config)
+
 
 def load_data(data_path: str) -> Tuple[pd.DataFrame, "pd.Series[Any]"]:
     logger.info(f"Loading transformed features from: {data_path}")
@@ -116,15 +117,15 @@ def train_and_save(data_path: str, transformer_path: str, model_path: str) -> No
         "LogisticRegression": LogisticRegression(
             max_iter=1000, class_weight="balanced"
         ),
-        "XGBoost": XGBClassifier(            
+        "XGBoost": XGBClassifier(
             random_state=42,
             use_label_encoder=False,
-            eval_metric='logloss',
+            eval_metric="logloss",
             # --- New Hyperparameters ---
-            n_estimators=200,      # More trees to learn more complex patterns
-            max_depth=5,           # Deeper trees to capture more interactions
-            learning_rate=0.1,     # A common, solid learning rate
-            scale_pos_weight=scale_pos_weight # Crucial for imbalanced data
+            n_estimators=200,  # More trees to learn more complex patterns
+            max_depth=5,  # Deeper trees to capture more interactions
+            learning_rate=0.1,  # A common, solid learning rate
+            scale_pos_weight=scale_pos_weight,  # Crucial for imbalanced data
         ),
         "LightGBM": LGBMClassifier(
             max_depth=3,

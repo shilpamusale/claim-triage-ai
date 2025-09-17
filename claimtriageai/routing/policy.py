@@ -133,7 +133,11 @@ def score_claim(
     return score, notes
 
 
-def assign_queue(claim: Optional[Any], team_rules: Dict[str, list[str]], label_map: Dict[str, list[str]]) -> str:
+def assign_queue(
+    claim: Optional[Any],
+    team_rules: Dict[str, list[str]],
+    label_map: Dict[str, list[str]],
+) -> str:
     logger.info("Assigning team based on cluster label...")
     if claim is None:
         return "DefaultQueue"
@@ -146,7 +150,7 @@ def assign_queue(claim: Optional[Any], team_rules: Dict[str, list[str]], label_m
         if any(keyword in cluster_label for keyword in keywords):
             routing_key = key
             break
-    
+
     logger.info(f"Mapped label '{cluster_label}' to routing key '{routing_key}'")
 
     # Use the stable routing key to find the correct team
@@ -154,7 +158,7 @@ def assign_queue(claim: Optional[Any], team_rules: Dict[str, list[str]], label_m
         if routing_key in required_keys:
             logger.info(f"Assigned to team: {team}")
             return team
-            
+
     return "DefaultQueue"
 
 
@@ -166,7 +170,8 @@ class PolicyEngine:
         self.label_mapping = config.get("label_mapping", {})
 
         if "label_mapping" not in config:
-            msg = "[PolicyEngine] ! Warning: Using default mock weights and team rules. Please verify your YAML config."
+            msg = "[PolicyEngine] ! Warning: Using default mock weights and team rules."
+            msg += " Please verify your YAML config."
             print(msg)
             logger.warning(msg)
 
@@ -188,6 +193,7 @@ class PolicyEngine:
         df["debug_notes"] = notes
 
         return df
+
 
 if __name__ == "__main__":
     load_routing_config()

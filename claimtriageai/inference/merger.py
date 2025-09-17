@@ -45,19 +45,23 @@ def merge_predictions_and_clusters(
             "`claim_id` must be unique in both"
             + " prediction and clustering dataframes."
         )
-        
+
     # --- FIX: Add umap_x and umap_y to the list of columns to keep ---
     cluster_cols_to_merge = [
-        'claim_id', 
-        'denial_cluster_id', 
-        'cluster_label',
-        'umap_x',
-        'umap_y'
-    ]   
-    cluster_cols_to_merge = [col for col in cluster_cols_to_merge if col in cluster_df.columns] 
+        "claim_id",
+        "denial_cluster_id",
+        "cluster_label",
+        "umap_x",
+        "umap_y",
+    ]
+    cluster_cols_to_merge = [
+        col for col in cluster_cols_to_merge if col in cluster_df.columns
+    ]
 
-    merged = pd.merge(pred_df, cluster_df[cluster_cols_to_merge], on="claim_id", how="inner")
-    
+    merged = pd.merge(
+        pred_df, cluster_df[cluster_cols_to_merge], on="claim_id", how="inner"
+    )
+
     print(f"merged DATA :{merged.head()}")
 
     if not REQUIRED_COLUMNS.issubset(set(merged.columns)):
