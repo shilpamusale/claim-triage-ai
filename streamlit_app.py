@@ -33,7 +33,7 @@ import requests  # type: ignore
 import streamlit as st
 
 # FastAPI backend URL
-API_URL: str = "http://localhost:8000/api/fullroute"
+API_URL: str = "https://claim-triage-api-392630579653.us-central1.run.app/api/fullroute"
 
 st.set_page_config(page_title="ClaimTriageAI", layout="wide")
 st.title("ClaimTriageAI — Full Triage Dashboard")
