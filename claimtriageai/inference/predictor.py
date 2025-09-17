@@ -2,33 +2,49 @@
 Module: predictor.py — Denial Prediction Inference Logic
 
 This module implements the core business logic to:
-- Accept raw claim data in various formats
-- Apply full preprocessing pipeline
-    (text cleaning, feature engineering, encoding)
-- Generate predictions:
-    denial flag, denial probability, top 3 reasons (optional)
-
-Features:
-- Input flexibility: dict, list[dict], or pd.DataFrame
-- PII-safe, reusable business logic
-- Designed for use in batch scripts or FastAPI
+- Load all necessary configurations and trained model artifacts.
+- Accept a DataFrame of raw claims.
+- Apply the full, consistent preprocessing pipeline.
+- Generate predictions and merge them with the original data.
 
 Author: ClaimTriageAI Team
 """
 
-from typing import Any, Dict, List, Union
-
-import numpy as np
 import pandas as pd
-from category_encoders import TargetEncoder
+import yaml
+from typing import Any, Dict, List, Union
 from sklearn.base import BaseEstimator
+from category_encoders import TargetEncoder
 from sklearn.compose import ColumnTransformer
-
+from claimtriageai.configs import paths
 from claimtriageai.inference.preprocessor import preprocess_for_inference
+from claimtriageai.utils.functions import load_pickle
 from claimtriageai.utils.logger import get_logger
+from claimtriageai.configs.paths import (
+    PREDICTION_MODEL_PATH,
+    FEATURE_CONFIG_PATH,
+    TARGET_ENCODER_PATH,
+    NUMERICAL_TRANSFORMER_PATH
+
+)
 
 # Initialize Logging
 logger = get_logger("inference")
+
+
+def load_and_merge_configs() -> dict:
+    """
+    Loads feature config from YAML and merges paths from the paths.py module
+    to create a single, complete configuration object.
+    """
+    logger.info("Loading feature configuration from YAML...")
+    with open(paths.FEATURE_CONFIG_PATH, 'r') as f:
+        config = yaml.safe_load(f)
+    
+    logger.info("Loading paths from paths.py module...")
+    # The vars() function turns the paths.py module's attributes into a dictionary
+    config['paths'] = vars(paths)
+    return config
 
 
 def predict_claims(
@@ -47,57 +63,37 @@ def predict_claims(
         numeric_transformer: Fitted numeric/boolean transformer
 
     Returns:
-        List of prediction dicts:
-        - denied (bool)
-        - denial_probability (float)
-        - top_3_denial_reasons (optional, if multiclass)
+        List of prediction dicts.
     """
-
-    # Create Dataframe from the input
-    logger.info(f"Create Dataframe from the input: {raw_data}... ")
-
     if isinstance(raw_data, dict):
         df_input = pd.DataFrame([raw_data])
     elif isinstance(raw_data, list):
         df_input = pd.DataFrame(raw_data)
-    elif isinstance(raw_data, pd.DataFrame):
-        df_input = raw_data.copy()
     else:
-        logger.error(f"# Create Dataframe from the input: {raw_data}... ")
-        raise ValueError("Input must be a dict, list of dicts, or DataFrame.")
+        df_input = raw_data.copy()
 
     # Preprocess features
-    logger.info("Preprocess features... ")
+    logger.info("Preprocessing features for prediction...")
     processed_df = preprocess_for_inference(
         df_input, target_encoder, numeric_transformer
     )
 
     # Predict
-    logger.info("Predict denials... ")
-    probabilities = model.predict_proba(processed_df)
-    is_multiclass = len(probabilities.shape) == 2 and probabilities.shape[1] > 2
-
+    logger.info("Generating denial probabilities...")
+    # Get probability of the positive class (denial) which is the second column
+    probabilities = model.predict_proba(processed_df)[:, 1]
+    
     results = []
+    # Ensure claim_id is treated as a string to avoid JSON serialization issues
+    df_input['claim_id'] = df_input['claim_id'].astype(str)
 
     for idx, row in df_input.iterrows():
-        if is_multiclass:
-            prob_array = probabilities[idx]
-            top_3_idx = np.argsort(prob_array)[::-1][:3]
-            denial_probability = float(np.max(prob_array))
-            denied = bool(top_3_idx[0] != 0)
-            result = {
-                "denied": denied,
-                "denial_probability": denial_probability,
-                "top_3_denial_reasons": top_3_idx.tolist(),
-            }
-        else:
-            # Binary classification
-            denial_probability = float(probabilities[idx][1])
-            denied = bool(denial_probability > 0.5)
-            result = {
-                "denied": denied,
-                "denial_probability": denial_probability,
-            }
+        prob = float(probabilities[idx])
+        result = {
+            "claim_id": row.get("claim_id", "N/A"),
+            "denial_probability": prob,
+            "denial_prediction": 1 if prob > 0.5 else 0
+        }
         results.append(result)
 
     return results

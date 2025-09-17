@@ -14,17 +14,24 @@ from sklearn.metrics import accuracy_score, f1_score, recall_score, roc_auc_scor
 from sklearn.model_selection import StratifiedKFold
 from xgboost import XGBClassifier
 
+import yaml
 from claimtriageai.configs.paths import (
     NUMERICAL_TRANSFORMER_PATH,
     PREDICTION_MODEL_PATH,
-    RAW_DATA_PATH,
+    PROCESSED_DATA_PATH,
     TARGET_COL,
+    FEATURE_CONFIG_PATH,
 )
 from claimtriageai.utils.logger import get_logger
 
 # Initialize Logging
 logger = get_logger("training")
 
+
+def load_feature_config():
+    with open(FEATURE_CONFIG_PATH, "r") as f:
+        config = yaml.safe_load(f)
+    return config
 
 def load_data(data_path: str) -> Tuple[pd.DataFrame, "pd.Series[Any]"]:
     logger.info(f"Loading transformed features from: {data_path}")
@@ -34,9 +41,15 @@ def load_data(data_path: str) -> Tuple[pd.DataFrame, "pd.Series[Any]"]:
         raise ValueError(f"Target column '{TARGET_COL}' not found in dataset")
 
     y = df[TARGET_COL]
-    df = df.drop(columns=[TARGET_COL])
-    logger.info(f"Loaded dataset: X shape = {df.shape}, y shape = {y.shape}")
-    return df, y
+    # Only use features listed in feature_config.yaml
+    config = load_feature_config()
+    feature_list = config.get("features", [])
+    missing = [f for f in feature_list if f not in df.columns]
+    if missing:
+        logger.warning(f"Missing features in data: {missing}")
+    X = df[[f for f in feature_list if f in df.columns]]
+    logger.info(f"Loaded dataset: X shape = {X.shape}, y shape = {y.shape}")
+    return X, y
 
 
 def evaluate_model(
@@ -97,20 +110,21 @@ def composite_score(metrics: Dict[str, float]) -> float:
 
 def train_and_save(data_path: str, transformer_path: str, model_path: str) -> None:
     X, y = load_data(data_path)
+    scale_pos_weight = y.value_counts()[0] / y.value_counts()[1]
 
     models = {
         "LogisticRegression": LogisticRegression(
             max_iter=1000, class_weight="balanced"
         ),
-        "XGBoost": XGBClassifier(
+        "XGBoost": XGBClassifier(            
+            random_state=42,
             use_label_encoder=False,
-            eval_metric="logloss",
-            max_depth=3,
-            n_estimators=50,
-            subsample=0.8,
-            colsample_bytree=0.8,
-            reg_alpha=1.0,
-            reg_lambda=1.0,
+            eval_metric='logloss',
+            # --- New Hyperparameters ---
+            n_estimators=200,      # More trees to learn more complex patterns
+            max_depth=5,           # Deeper trees to capture more interactions
+            learning_rate=0.1,     # A common, solid learning rate
+            scale_pos_weight=scale_pos_weight # Crucial for imbalanced data
         ),
         "LightGBM": LGBMClassifier(
             max_depth=3,
@@ -172,7 +186,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--data",
-        default=RAW_DATA_PATH,
+        default=PROCESSED_DATA_PATH,
         help="Path to input data CSV",
     )
     parser.add_argument(

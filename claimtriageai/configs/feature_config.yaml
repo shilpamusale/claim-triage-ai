@@ -1,8 +1,19 @@
 # Versioned list of features for model training
 
+
 version: v1.0
 
-features:
+edi_fields:
+  - patient_dob
+  - service_date
+  - patient_gender
+  - facility_code
+  - billing_provider_specialty
+  - claim_type
+  - prior_authorization
+  - accident_indicator
+
+categorical_features_target_encoded:
   - payer_id
   - provider_type
   - plan_type
@@ -11,6 +22,35 @@ features:
   - facility_code
   - diagnosis_code
   - procedure_code
+
+numeric_features:
+  - claim_age_days
+  - patient_age
+  - total_charge_amount
+  - days_to_submission
+  - payer_deny_rate
+  - provider_deny_rate
+  - resubmission_rate_by_payer
+  - followup_intensity_score
+
+boolean_features:
+  - is_resubmission
+  - contains_auth_term
+  - prior_authorization
+  - accident_indicator
+  - high_charge_flag
+
+features:
+  # Target-encoded categorical features (as they appear in final df)
+  - payer_id
+  - provider_type
+  - plan_type
+  - claim_type
+  - billing_provider_specialty
+  - facility_code
+  - diagnosis_code
+  - procedure_code
+  # Transformed numeric features
   - num__claim_age_days
   - num__patient_age
   - num__total_charge_amount
@@ -19,6 +59,7 @@ features:
   - num__provider_deny_rate
   - num__resubmission_rate_by_payer
   - num__followup_intensity_score
+  # Transformed boolean features
   - bool__is_resubmission
   - bool__contains_auth_term
   - bool__prior_authorization

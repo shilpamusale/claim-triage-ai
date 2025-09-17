@@ -1,5 +1,5 @@
 """
-Module: root_cause_cluster.py
+Module: clustering/root_cause_cluster.py
     — Root Cause Clustering for Denied Healthcare Claims
 
 This module performs unsupervised clustering of
@@ -49,6 +49,8 @@ from claimtriageai.configs.paths import (
     INFERENCE_INPUT_PATH,
     REDUCER_MODEL_PATH,
     SENTENCE_TRANSFORMER_MODEL_NAME,
+    PROCESSED_DATA_PATH
+    
 )
 from claimtriageai.inference.loader import load_model
 from claimtriageai.inference.preprocessor import preprocess_for_inference
@@ -67,7 +69,9 @@ def embed_denial_reasons(
 
 
 def reduce_dimensions(
-    data: np.ndarray[Any, Any], n_components: int = 5, random_state: int = 42
+    data: np.ndarray[Any, Any], 
+    n_components: int = 5, 
+    random_state: int = 42
 ) -> tuple[np.ndarray[Any, Any], Optional[UMAP]]:
     if data.shape[0] < 3:
         logger.warning("Too few rows to perform clustering. Returning input unchanged.")
@@ -77,6 +81,8 @@ def reduce_dimensions(
     logger.info(f"Reducing dimensions to {effective_components} using UMAP")
     reducer = UMAP(
         n_components=effective_components,
+        n_neighbors=10,
+        # min_dist=0.5,
         random_state=random_state,
         metric="cosine",
         densmap=False,
@@ -86,15 +92,32 @@ def reduce_dimensions(
 
 
 def cluster_embeddings(
-    data: np.ndarray[Any, Any], min_cluster_size: int = 30
+    data: np.ndarray[Any, Any], min_cluster_size: int = 8
 ) -> tuple[np.ndarray[Any, Any], HDBSCAN]:
-    logger.info("Clustering data with HDBSCAN")
-    n_samples = data.shape[0]
-    min_cluster_size = min(min_cluster_size, max(2, n_samples // 3))
-    clusterer = HDBSCAN(min_cluster_size=min_cluster_size, prediction_data=True)
+    logger.info(f"Clustering data with HDBSCAN (min_cluster_size={min_cluster_size})...")
+    
+    clusterer = HDBSCAN(
+        min_cluster_size=min_cluster_size, 
+        min_samples=5, # Added for robustness
+        prediction_data=True
+    )
     labels = clusterer.fit_predict(data)
-    logger.info(f"Detected {len(set(labels)) - (1 if -1 in labels else 0)} clusters.")
+    
+    num_clusters = len(set(labels)) - (1 if -1 in labels else 0)
+    logger.info(f"Detected {num_clusters} clusters.")
+    
     return labels, clusterer
+
+# def cluster_embeddings(
+#     data: np.ndarray[Any, Any], min_cluster_size: int = 15
+# ) -> tuple[np.ndarray[Any, Any], HDBSCAN]:
+#     logger.info("Clustering data with HDBSCAN")
+#     n_samples = data.shape[0]
+#     min_cluster_size = min(min_cluster_size, max(2, n_samples // 3))
+#     clusterer = HDBSCAN(min_cluster_size=min_cluster_size, prediction_data=True)
+#     labels = clusterer.fit_predict(data)
+#     logger.info(f"Detected {len(set(labels)) - (1 if -1 in labels else 0)} clusters.")
+#     return labels, clusterer
 
 
 def attach_clusters(
@@ -134,6 +157,7 @@ def run_clustering_pipeline(
     reducer_model_path: Union[str, Path] = REDUCER_MODEL_PATH,
 ) -> pd.DataFrame:
     logger.info("Starting root cause clustering pipeline.")
+    df = df[df['denied'] == 1].copy()
 
     if use_notes and notes_col in df.columns:
         logger.info(
@@ -175,6 +199,21 @@ def run_clustering_pipeline(
     return clustered_df
 
 
+# if __name__ == "__main__":
+#     df = pd.read_csv(INFERENCE_INPUT_PATH)
+#     run_clustering_pipeline(df)
+
 if __name__ == "__main__":
-    df = pd.read_csv(INFERENCE_INPUT_PATH)
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Train a clustering model on processed claims data.")
+    parser.add_argument(
+        "--input",
+        type=str,
+        default=PROCESSED_DATA_PATH,
+        help="Path to the processed claims data for training."
+    )
+    args = parser.parse_args()
+
+    df = pd.read_csv(args.input)
     run_clustering_pipeline(df)

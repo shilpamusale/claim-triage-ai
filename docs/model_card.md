@@ -2,7 +2,7 @@
 
 **Model Name:** `xgb_denial_predictor_v1`  
 **Owner:** Shilpa Musale  
-**Created:** May 2025  
+**Created:** May 2024  
 **Version:** 1.0
 
 ---

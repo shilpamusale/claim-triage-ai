@@ -34,14 +34,14 @@ if __name__ == "__main__":
         description="Merge prediction and clustering results."
     )
     parser.add_argument(
-        "--pred", default=DENIAL_PREDICTION_OUTPUT_PATH, help="Path to predictions CSV"
+        "--predictions", default=DENIAL_PREDICTION_OUTPUT_PATH, help="Path to predictions CSV"
     )
     parser.add_argument(
-        "--cluster", default=CLUSTERING_OUTPUT_PATH, help="Path to clustering CSV"
+        "--clusters", default=CLUSTERING_OUTPUT_PATH, help="Path to clustering CSV"
     )
     parser.add_argument(
         "--output", default=MERGED_ROUTING_PATH, help="Path to save merged routing file"
     )
     args = parser.parse_args()
 
-    main(args.pred, args.cluster, args.output)
+    main(args.predictions, args.clusters, args.output)

@@ -11,6 +11,6 @@ matches = (
 perfect_leaks = matches[matches == 1]
 
 print(
-    f"🔍 Found {len(perfect_leaks)} unique feature"
+    f" Found {len(perfect_leaks)} unique feature"
     + " patterns with only one class label"
 )

@@ -1,5 +1,5 @@
 """
-Module: clustering_pipeline.py — Denial Clustering Orchestration Logic
+Module: clustering/clustering_pipeline.py — Denial Clustering Orchestration Logic
 
 This module exposes a callable `cluster_claims()` function that:
 - Loads transformers

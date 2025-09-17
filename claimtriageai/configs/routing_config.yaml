@@ -15,6 +15,26 @@ weights:
   default_score: 1.0
 
 team_rules:
-  TeamA: ["auth_required", "expired_coverage"]
-  TeamB: ["coding_error"]
-  TeamC: ["duplicate_claim"]
+  Team_Authorization: ["auth_required"]
+  Team_CodingError: ["coding_error"]
+  Team_ClaimError: ["duplicate_claim"]
+  Team_CoverageIssue: ["expired_coverage"]
+  Team_Medical_Necessity: ["medically necessary"]
+
+# --- ADD THIS NEW SECTION ---
+label_mapping:
+  auth_required:
+    - "Authorization"
+    - "Pre-certification"
+    - "Referral"
+    - "Auth number"
+  coding_error:
+    - "Procedure Inconsistent"
+    - "Invalid Procedure Code"
+  medical_necessity:
+    - "Medically Necessary"
+  expired_coverage:
+    - "Patient Not Covered"
+    - "Coverage Terminated"
+  duplicate_claim:
+    - "Duplicate Claim"

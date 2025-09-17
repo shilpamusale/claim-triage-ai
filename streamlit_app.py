@@ -93,7 +93,7 @@ with tabs[0]:
 with tabs[1]:
     results_df = cast(Optional[pd.DataFrame], st.session_state.get("results_df"))
     if results_df is not None:
-        st.write("🔍 Available columns:", results_df.columns.tolist())
+        # st.write("🔍 Available columns:", results_df.columns.tolist())
         st.dataframe(results_df.head())
 
     if results_df is not None and "recommended_queue" in results_df.columns:
@@ -114,7 +114,7 @@ with tabs[1]:
 # --- Tab 3: UMAP Cluster Plot ---
 with tabs[2]:
     if results_df is not None:
-        st.write("🔍 Available columns:", results_df.columns.tolist())
+        # st.write("🔍 Available columns:", results_df.columns.tolist())
         st.dataframe(results_df.head())
     if results_df is not None and {"umap_x", "umap_y", "denial_cluster_id"}.issubset(
         results_df.columns

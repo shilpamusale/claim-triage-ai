@@ -1,5 +1,5 @@
 """
-Module: cluster_summary.py — Cluster Labeling and Explanation
+Module: clustering/cluster_summary.py — Cluster Labeling and Explanation
 
 This module computes representative labels for each cluster using either:
 - Mode of denial_reason (simple majority)

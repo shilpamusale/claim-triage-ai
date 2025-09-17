@@ -133,18 +133,28 @@ def score_claim(
     return score, notes
 
 
-def assign_queue(claim: Optional[Any], config: Dict[str, list[str]]) -> str:
-    logger.info("Assign team...")
+def assign_queue(claim: Optional[Any], team_rules: Dict[str, list[str]], label_map: Dict[str, list[str]]) -> str:
+    logger.info("Assigning team based on cluster label...")
     if claim is None:
-        return "default_queue"
-    cluster_id = (
-        str(claim.get("denial_cluster_id", "unknown"))
-        if claim is not None
-        else "unknown"
-    )
-    for team, clusters in config.items():
-        if cluster_id in clusters:
+        return "DefaultQueue"
+
+    cluster_label = claim.get("cluster_label", "")
+    routing_key = "unknown"
+
+    # Find the corresponding short key by checking for keywords in the long label
+    for key, keywords in label_map.items():
+        if any(keyword in cluster_label for keyword in keywords):
+            routing_key = key
+            break
+    
+    logger.info(f"Mapped label '{cluster_label}' to routing key '{routing_key}'")
+
+    # Use the stable routing key to find the correct team
+    for team, required_keys in team_rules.items():
+        if routing_key in required_keys:
+            logger.info(f"Assigned to team: {team}")
             return team
+            
     return "DefaultQueue"
 
 
@@ -153,21 +163,20 @@ class PolicyEngine:
         config = load_routing_config(config_path)
         self.weights = config.get("weights", MOCK_WEIGHTS)
         self.team_rules = config.get("team_rules", MOCK_TEAM_RULES)
+        self.label_mapping = config.get("label_mapping", {})
 
-        if "weights" not in config or "team_rules" not in config:
-            msg = (
-                "[PolicyEngine] ! Using default mock weights and team rules. "
-                "Please verify your YAML config."
-            )
+        if "label_mapping" not in config:
+            msg = "[PolicyEngine] ! Warning: Using default mock weights and team rules. Please verify your YAML config."
             print(msg)
-            logger.error(msg)
+            logger.warning(msg)
 
     def route_all(self, df: pd.DataFrame) -> pd.DataFrame:
         scores, queues, notes = [], [], []
 
         for _, row in df.iterrows():
             score, debug = score_claim(row, self.weights)
-            queue = assign_queue(row, self.team_rules)
+            # --- FIX: Pass the loaded label_mapping to the function ---
+            queue = assign_queue(row, self.team_rules, self.label_mapping)
 
             scores.append(round(score, 2))
             queues.append(queue)
@@ -179,7 +188,6 @@ class PolicyEngine:
         df["debug_notes"] = notes
 
         return df
-
 
 if __name__ == "__main__":
     load_routing_config()

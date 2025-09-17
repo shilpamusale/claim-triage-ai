@@ -74,6 +74,7 @@ def engineer_features(df: pd.DataFrame, y: Optional[Any] = None) -> pd.DataFrame
 
     # --- Keyword Match in Denial Reason ---
     if "denial_reason" in df.columns:
+        df["denial_reason"] = df["denial_reason"].astype(str)
         df["contains_auth_term"] = df["denial_reason"].str.contains(
             r"\bauth\b", case=False, na=False
         )

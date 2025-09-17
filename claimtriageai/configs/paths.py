@@ -7,15 +7,19 @@ Defines constants such as file paths and model save locations.
 from pathlib import Path
 
 # DATA
-RAW_DATA_PATH = Path("data/processed_claims.csv")
+RAW_DATA_PATH = Path("data/raw_claims_v2.csv")
 PROCESSED_DATA_PATH = Path("data/processed_claims.csv")
-INFERENCE_INPUT_PATH = Path("data/inference_input.csv")
+INFERENCE_INPUT_PATH = Path("data/inference_claims.csv")
 DENIAL_PREDICTION_OUTPUT_PATH = Path("data/denial_prediction_output.csv")
 CLUSTERING_OUTPUT_PATH = Path("data/clustering_output.csv")
 CLUSTERING_CLAIMS_LABELED_PATH = Path("data/clustered_claims_labeled.csv")
 CLUSTER_LABELS_JSON_PATH = Path("data/cluster_labels.json")
 MERGED_ROUTING_PATH = Path("data/merged_denial-prediction_clustering.csv")
 CLAIMS_ROUTING_OUTPUT_PATH = Path("data/routed_claims.csv")
+UMAP_PLOT_PATH = Path("data/umap_cluster_plot.png")
+UMAP_FANCY_PLOT_PATH = Path("data/umap_cluster_plot_fancy.png")
+FINAL_OUTPUT_PATH = Path("data/routing_ready_claims.csv")
+
 # Target column
 TARGET_COL = "denied"
 
