@@ -64,7 +64,7 @@ def plot_umap_clusters(input_csv: str, labels_path: str, output_path: str) -> No
     # FIX: Update the legend title
     plt.legend(title="Cluster Name", bbox_to_anchor=(1.05, 1), loc="upper left")
 
-    plt.tight_layout(rect=[0, 0, 0.85, 1])  # Adjust layout to make space for the legend
+    plt.tight_layout(rect=(0, 0, 0.85, 1))  
     plt.savefig(output_path, bbox_inches="tight")
     print(f"Saved UMAP cluster plot to: {output_path}")
     plt.close()

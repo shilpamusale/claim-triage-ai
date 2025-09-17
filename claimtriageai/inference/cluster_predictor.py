@@ -5,6 +5,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from hdbscan import approximate_predict
+from numpy.typing import NDArray
 from sentence_transformers import SentenceTransformer
 
 from claimtriageai.inference.loader import load_model
@@ -19,7 +20,7 @@ def predict_clusters(
     reducer_path: str,
     clusterer_path: str,
     sbert_model_name: str = "all-MiniLM-L6-v2",
-) -> tuple[np.ndarray, pd.DataFrame]:
+) -> tuple[NDArray[np.int_], pd.DataFrame]:
     """
     Predicts clusters for new data using pre-trained UMAP and HDBSCAN models.
     Returns the labels and a DataFrame with UMAP coordinates.
