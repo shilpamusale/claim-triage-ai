@@ -18,8 +18,8 @@ team_rules:
   Team_Authorization: ["auth_required"]
   Team_CodingError: ["coding_error"]
   Team_ClaimError: ["duplicate_claim"]
-  Team_CoverageIssue: ["expired_coverage"]
-  Team_Medical_Necessity: ["medically necessary"]
+  Team_CoverageIssue: ["coverahge_issue"]
+  Team_Medical_Necessity: ["medical_necessity"]
 
 # --- ADD THIS NEW SECTION ---
 label_mapping:
@@ -33,8 +33,11 @@ label_mapping:
     - "Invalid Procedure Code"
   medical_necessity:
     - "Medically Necessary"
-  expired_coverage:
+    - "Level of care not appropriate"
+    - "Exceeds Plan Limitation for this service type"
+  coverahge_issue:
     - "Patient Not Covered"
     - "Coverage Terminated"
+    - "Out-of-Network Provider for Plan"
   duplicate_claim:
     - "Duplicate Claim"
