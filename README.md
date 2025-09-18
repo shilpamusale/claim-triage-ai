@@ -28,6 +28,8 @@
 - Routing high-complexity claims to the right team using contextual features
   - For model details and evaluation, see the 
 
+---
+![ClaimTriageAI Demo](docs/claimtraigeai_demo.gif)
 
 ---
 
@@ -221,7 +223,7 @@ data/raw_claims.csv
 
 > Trained using 5-fold cross-validation on simulated EHR + claims data (CatBoost model).
 
-⚠️ Results based on simulated EHR + claims dataset.
+Results based on simulated EHR + claims dataset.
 
 ## Roadmap
 ### Domain Additions
