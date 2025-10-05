@@ -62,17 +62,6 @@
   Integrated testing, type checks, and style checks with `pytest`, `mypy`, `ruff`, `black`, and GitHub Actions from day one.
 ---
 
-## System Flow
-
-```mermaid
-flowchart TD
-    A[Claims Dataset] --> B[Feature Engineering]
-    B --> C[Denial Prediction (XGBoost)]
-    C --> D[Root Cause Clustering (UMAP + HDBSCAN)]
-    D --> E[Routing Engine]
-    E --> F[FastAPI Endpoint]
-```
-
 ## API Usage (FastAPI)
 
 ### 🔹 POST /api/fullroute
