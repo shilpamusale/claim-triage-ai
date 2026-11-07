@@ -9,7 +9,7 @@
 
 ## Overview
 
-The **Routing Policy Engine** is a configurable, rule-driven scoring module that assigns **priority scores** and **recommended queues** to denied healthcare claims. Inspired by reinforcement learning principles (contextual reward scoring), this component is crucial for **A/R team triage**, ensuring complex claims are routed to the most skilled units for resolution.
+The **Routing Policy Engine** is a configurable, rule-driven scoring module that assigns **priority scores** and **recommended queues** to denied healthcare claims. Scores are weighted rules set in `routing_config.yaml`; the engine does not learn from outcomes. It supports **A/R team triage** by routing complex claims to the most skilled units. Learning the weights from resolution outcomes (for example, a contextual bandit) is a possible extension.
 
 ---
 

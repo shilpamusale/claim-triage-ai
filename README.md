@@ -1,10 +1,9 @@
 # ClaimTriageAI
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 ![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Made with FastAPI](https://img.shields.io/badge/Made%20with-FastAPI-009688.svg)
-![CI](https://github.com/ishi3012/claim-flow-engine/actions/workflows/ci.yml/badge.svg)
+[![CI](https://github.com/shilpamusale/claim-triage-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/shilpamusale/claim-triage-ai/actions/workflows/ci.yml)
 ![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)
 ![Linted with Ruff](https://img.shields.io/badge/linting-ruff-yellow)
 ![Docs](https://img.shields.io/badge/docs-available-blue)
@@ -13,7 +12,7 @@
 
 
 
-> **ClaimTriageAI** is an ML-powered microservice for automating healthcare claim denial prediction, uncovering root causes through NLP-based clustering, and intelligently routing high-priority claims to resolution teams using reinforcement learning-inspired policies.
+> **ClaimTriageAI** is an ML-powered microservice for automating healthcare claim denial prediction, uncovering root causes through NLP-based clustering, and routing high-priority claims to resolution teams with a configurable, rule-based priority scoring engine.
 
 ---
 
@@ -22,11 +21,11 @@
 **ClaimTriageAI** simulates real-world **Revenue Cycle Management (RCM)** workflows and serves as a full-stack ML engineering showcase. It enables:
 
 - Predicting whether a claim will be denied and why
-  - For model details and evaluation, see the 
+  - For model details and evaluation, see the [Denial Prediction Model Card](docs/model_card.md).
 - Clustering denied claims into root causes using sentence embeddings
-  - For model details and evaluation, see the .
+  - For model details and evaluation, see the [Root Cause Clustering Model Card](docs/model_card_cluster.md).
 - Routing high-complexity claims to the right team using contextual features
-  - For model details and evaluation, see the 
+  - For scoring logic and configuration, see the [Routing Policy Engine Card](docs/model_card_policy.md).
 
 ---
 ![ClaimTriageAI Demo](docs/claimtraigeai_demo.gif)
@@ -47,13 +46,13 @@
 ## Key Features
 
 - **Real-time Denial Prediction**  
-  Uses XGBoost/LightGBM models trained on structured claim + EHR data.
+  Compares XGBoost, LightGBM and CatBoost on simulated structured claim + EHR data (CatBoost selected).
 
 - **Root Cause Clustering**  
   Embeds denial reasons with Sentence-BERT and applies UMAP + HDBSCAN to discover latent denial drivers.
 
 - **Routing Engine**  
-  Applies an offline-RL-inspired policy to prioritize A/R workflows based on claim metadata, denial cluster, and team skills.
+  Scores and prioritizes A/R work with weighted rules (configured in `routing_config.yaml`) over claim metadata, denial cluster and team skills. Learning these weights from resolution outcomes is on the roadmap.
 
 - **FastAPI Inference API**  
   Modular endpoints for predicting denial, clustering root causes, and suggesting routing actions.
@@ -212,10 +211,15 @@ data/raw_claims.csv
 
 > Trained using 5-fold cross-validation on simulated EHR + claims data (CatBoost model).
 
-Results based on simulated EHR + claims dataset.
+> **Read these numbers as a pipeline check, not as model quality.** An AUC of 0.54 is close to chance:
+> the simulator generates claims without the logic real payers deny on (missing prior authorization,
+> CPT/ICD-10 mismatches, timely filing limits), so there is little signal to learn. Rebuilding the
+> simulator around those rules, with a rules-only baseline to beat, is the first item on the roadmap.
 
 ## Roadmap
 ### Domain Additions
+- Realistic claim simulator encoding payer denial rules, evaluated against a rules-only baseline
+
 - HITL feedback loop for routing policy refinement
 
 - Real-time EHR integration

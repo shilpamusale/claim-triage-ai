@@ -36,8 +36,8 @@ This model predicts whether a healthcare claim is likely to be **denied** and, i
 
 | Aspect             | Details                                   |
 |--------------------|--------------------------------------------|
-| Model Type         | Gradient Boosted Trees (XGBoost)           |
-| Frameworks         | scikit-learn, XGBoost                      |
+| Model Type         | Gradient Boosted Trees (CatBoost selected) |
+| Frameworks         | scikit-learn, CatBoost, XGBoost, LightGBM  |
 | Task               | Binary classification + Top-K multi-label |
 | Inputs             | 32 structured features (claims + EHR)      |
 | Outputs            | Denial probability, top-3 denial reasons   |
@@ -77,6 +77,8 @@ This model predicts whether a healthcare claim is likely to be **denied** and, i
 ## Limitations
 
 - Trained on simulated data — performance may vary on real EHR pipelines
+- AUC 0.54 is close to chance: the simulator does not encode real payer denial logic (prior authorization,
+  CPT/ICD-10 mismatches, timely filing), so these metrics validate the pipeline, not predictive quality
 - Does not capture unstructured data unless explicitly embedded
 - Payer behavior drift may affect model stability without retraining
 - Predictions are probabilistic — HITL validation is advised before appeals
