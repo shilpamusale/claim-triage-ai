@@ -16,7 +16,7 @@ Features:
 - Ready for integration into routing microservice or batch pipeline
 
 Intended Use:
-    from claimtriageai.routing.policy_engine import PolicyEngine
+    from claimtriageai.routing.policy import PolicyEngine
     policy_engine = PolicyEngine()
     routed_df = policy_engine.route_all(claims_df)
 
